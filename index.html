@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Match Streaming</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background: url('https://source.unsplash.com/1600x900/?sports,stadium') no-repeat center center/cover; 
+            color: white;
+        }
+        .container { 
+            width: 80%; 
+            margin: auto; 
+            padding: 20px; 
+            background: rgba(0, 0, 0, 0.7); 
+            border-radius: 10px; 
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1); 
+        }
+        .chat-box { 
+            width: 60%; 
+            margin: auto; 
+            border: 1px solid #ccc; 
+            padding: 10px; 
+            height: 300px; 
+            overflow-y: scroll; 
+            background: #fff; 
+            color: black;
+        }
+        .team-vs { 
+            font-size: 24px; 
+            margin: 20px; 
+            font-weight: bold; 
+        }
+        .input-field { 
+            padding: 10px; 
+            margin: 10px; 
+            border: 1px solid #ccc; 
+            border-radius: 5px; 
+        }
+        .btn { 
+            padding: 10px 15px; 
+            border: none; 
+            background: #007BFF; 
+            color: white; 
+            cursor: pointer; 
+            border-radius: 5px; 
+        }
+        .btn:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Live Match Streaming</h1>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/live_stream?channel=YOUR_CHANNEL_ID" frameborder="0" allowfullscreen></iframe>
+        
+        <div class="team-vs">
+            <strong id="teamA"></strong> VS <strong id="teamB"></strong>
+        </div>
+        
+        <h2>Register</h2>
+        <input type="text" class="input-field" placeholder="Username">
+        <input type="email" class="input-field" placeholder="Email">
+        <button class="btn">Register</button>
+        
+        <h2>Live Chat</h2>
+        <div class="chat-box" id="chat-box"></div>
+        <input type="text" id="chat-input" class="input-field" placeholder="Type a message...">
+        <button class="btn" onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param) || 'Unknown Team';
+        }
+
+        document.getElementById("teamA").innerText = getQueryParam("teamA");
+        document.getElementById("teamB").innerText = getQueryParam("teamB");
+
+        function sendMessage() {
+            let input = document.getElementById("chat-input");
+            let chatBox = document.getElementById("chat-box");
+            let msg = input.value;
+            if (msg.trim() === "") return;
+            chatBox.innerHTML += `<p><strong>You:</strong> ${msg}</p>`;
+            input.value = "";
+            
+            setTimeout(() => {
+                let botReply = "Bot: " + (msg.toLowerCase().includes("hi") ? "Hello! How can I help?" : "I don't understand.");
+                chatBox.innerHTML += `<p>${botReply}</p>`;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
