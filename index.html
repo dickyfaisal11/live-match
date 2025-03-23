@@ -8,7 +8,7 @@
         body { 
             font-family: Arial, sans-serif; 
             text-align: center; 
-            background: url('https://source.unsplash.com/1600x900/?sports,stadium') no-repeat center center/cover; 
+            background: url(gambar.jpg) no-repeat center center/cover; 
             color: white;
         }
         .container { 
@@ -19,56 +19,85 @@
             border-radius: 10px; 
             box-shadow: 0px 0px 10px rgba(0,0,0,0.1); 
         }
+        .player-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: auto;
+        }
+        iframe {
+            width: 100%;
+            height: 450px;
+            border: none;
+        }
+        .register-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .register-overlay h2 {
+            margin-bottom: 20px;
+        }
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            background: #007BFF;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .btn:hover { background: #0056b3; }
+        .team-vs {
+            font-size: 24px;
+            margin: 20px;
+            font-weight: bold;
+        }
         .chat-box { 
-            width: 60%; 
+            width: 40%; 
             margin: auto; 
             border: 1px solid #ccc; 
             padding: 10px; 
-            height: 300px; 
+            height: 200px; 
             overflow-y: scroll; 
-            background: #fff; 
-            color: black;
+            background: black; 
+            color: white;
+            text-align: left;
+            font-size: 14px;
         }
-        .team-vs { 
-            font-size: 24px; 
-            margin: 20px; 
-            font-weight: bold; 
+        .chat-box p {
+            margin: 5px 0;
+            padding: 5px;
+            background: #333;
+            border-radius: 5px;
         }
-        .input-field { 
-            padding: 10px; 
-            margin: 10px; 
-            border: 1px solid #ccc; 
-            border-radius: 5px; 
-        }
-        .btn { 
-            padding: 10px 15px; 
-            border: none; 
-            background: #007BFF; 
-            color: white; 
-            cursor: pointer; 
-            border-radius: 5px; 
-        }
-        .btn:hover { background: #0056b3; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Live Match Streaming</h1>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/live_stream?channel=YOUR_CHANNEL_ID" frameborder="0" allowfullscreen></iframe>
         
+        <div class="player-container">
+            <iframe id="streamPlayer" src="https://www.youtube.com/embed/live_stream?channel=YOUR_CHANNEL_ID" allowfullscreen></iframe>
+            <div class="register-overlay" id="registerOverlay">
+                <h2>Register to Watch</h2>
+                <button class="btn" onclick="registerUser()">Register Now</button>
+            </div>
+        </div>
+
         <div class="team-vs">
             <strong id="teamA"></strong> VS <strong id="teamB"></strong>
         </div>
-        
-        <h2>Register</h2>
-        <input type="text" class="input-field" placeholder="Username">
-        <input type="email" class="input-field" placeholder="Email">
-        <button class="btn">Register</button>
-        
+
         <h2>Live Chat</h2>
         <div class="chat-box" id="chat-box"></div>
-        <input type="text" id="chat-input" class="input-field" placeholder="Type a message...">
-        <button class="btn" onclick="sendMessage()">Send</button>
+        <button class="btn" id="registerChat" onclick="registerForChat()">Register to Comment</button>
     </div>
 
     <script>
@@ -80,19 +109,34 @@
         document.getElementById("teamA").innerText = getQueryParam("teamA");
         document.getElementById("teamB").innerText = getQueryParam("teamB");
 
-        function sendMessage() {
-            let input = document.getElementById("chat-input");
-            let chatBox = document.getElementById("chat-box");
-            let msg = input.value;
-            if (msg.trim() === "") return;
-            chatBox.innerHTML += `<p><strong>You:</strong> ${msg}</p>`;
-            input.value = "";
-            
-            setTimeout(() => {
-                let botReply = "Bot: " + (msg.toLowerCase().includes("hi") ? "Hello! How can I help?" : "I don't understand.");
-                chatBox.innerHTML += `<p>${botReply}</p>`;
-            }, 1000);
+        function registerUser() {
+            document.getElementById("registerOverlay").style.display = "none";
         }
+
+        function registerForChat() {
+            alert("Please register or log in to comment!");
+        }
+
+        const chatBox = document.getElementById("chat-box");
+        const fakeUsers = ["JohnDoe", "SoccerFan99", "EmilyRocks", "MikeTheLegend", "LisaLover", "ChrisM"];
+        const fakeComments = [
+            "This match is getting intense! 🔥",
+            "What a goal! Unbelievable shot! ⚽",
+            "Team A is dominating right now!",
+            "Come on Team B, fight back! 💪",
+            "Wow, that save was insane! 🧤",
+            "This referee is so biased! 🤦‍♂️"
+        ];
+
+        function addFakeComment() {
+            const randomUser = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
+            const randomComment = fakeComments[Math.floor(Math.random() * fakeComments.length)];
+            const message = `<p><strong>${randomUser}:</strong> ${randomComment}</p>`;
+            chatBox.innerHTML += message;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        setInterval(addFakeComment, 3000);
     </script>
 </body>
 </html>
