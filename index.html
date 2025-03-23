@@ -10,9 +10,12 @@
             text-align: center; 
             background: url(gambar.jpg) no-repeat center center/cover; 
             color: white;
+            margin: 0;
+            padding: 0;
         }
         .container { 
-            width: 80%; 
+            width: 90%; 
+            max-width: 800px;
             margin: auto; 
             padding: 20px; 
             background: rgba(0, 0, 0, 0.7); 
@@ -22,12 +25,10 @@
         .player-container {
             position: relative;
             width: 100%;
-            max-width: 800px;
-            margin: auto;
         }
         iframe {
             width: 100%;
-            height: 450px;
+            height: 50vh;
             border: none;
         }
         .register-overlay {
@@ -55,12 +56,13 @@
         }
         .btn:hover { background: #0056b3; }
         .team-vs {
-            font-size: 24px;
-            margin: 20px;
+            font-size: 20px;
+            margin: 15px;
             font-weight: bold;
         }
         .chat-box { 
-            width: 40%; 
+            width: 100%; 
+            max-width: 400px;
             margin: auto; 
             border: 1px solid #ccc; 
             padding: 10px; 
@@ -70,12 +72,22 @@
             color: white;
             text-align: left;
             font-size: 14px;
+            border-radius: 5px;
         }
         .chat-box p {
             margin: 5px 0;
             padding: 5px;
             background: #333;
             border-radius: 5px;
+        }
+        @media (max-width: 600px) {
+            .chat-box {
+                height: 150px;
+                font-size: 12px;
+            }
+            iframe {
+                height: 40vh;
+            }
         }
     </style>
 </head>
@@ -106,8 +118,11 @@
             return urlParams.get(param) || 'Unknown Team';
         }
 
-        document.getElementById("teamA").innerText = getQueryParam("teamA");
-        document.getElementById("teamB").innerText = getQueryParam("teamB");
+        const teamA = getQueryParam("teamA");
+        const teamB = getQueryParam("teamB");
+
+        document.getElementById("teamA").innerText = teamA;
+        document.getElementById("teamB").innerText = teamB;
 
         function registerUser() {
             document.getElementById("registerOverlay").style.display = "none";
@@ -120,12 +135,12 @@
         const chatBox = document.getElementById("chat-box");
         const fakeUsers = ["JohnDoe", "SoccerFan99", "EmilyRocks", "MikeTheLegend", "LisaLover", "ChrisM"];
         const fakeComments = [
-            "This match is getting intense! 🔥",
-            "What a goal! Unbelievable shot! ⚽",
-            "Team A is dominating right now!",
-            "Come on Team B, fight back! 💪",
-            "Wow, that save was insane! 🧤",
-            "This referee is so biased! 🤦‍♂️"
+            `This match between ${teamA} and ${teamB} is getting intense! 🔥`,
+            `What a goal by ${teamA}! Unbelievable shot! ⚽`,
+            `${teamA} is dominating right now!`,
+            `Come on ${teamB}, fight back! 💪`,
+            `Wow, that save against ${teamB} was insane! 🧤`,
+            `This referee is so biased towards ${teamA}! 🤦‍♂️`
         ];
 
         function addFakeComment() {
